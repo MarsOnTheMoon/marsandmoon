@@ -1,0 +1,15 @@
+.film {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.caption {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  font-family: var(--font-ui);
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: rgba(var(--rgb-ivory), 0.5);
+}

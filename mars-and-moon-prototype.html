@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mars & Moon — A Private Atelier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@400;500&family=Tenor+Sans&display=swap" rel="stylesheet">
+<style>
+  /* ── TOKENS ─────────────────────────────────────────── */
+  :root {
+    --color-moonlight:    #FBF7EF;
+    --color-ivory:        #F5EFE6;
+    --color-bone:         #EAE2D6;
+    --color-veil:         #C7BEB2;
+    --color-mist:         #A8A29A;
+    --color-rose:         #D9B6B0;
+    --color-smoke:        #6B6660;
+    --color-champagne:    #B89F7E;
+    --color-plum:         #3D1E2E;
+    --color-midnight:     #0E1A2B;
+    --font-display:       'Tenor Sans', sans-serif;
+    --font-editorial:     'Cormorant Garamond', serif;
+    --font-ui:            'Inter', sans-serif;
+    --ease-reveal:        cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ── RESET ───────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--color-ivory);
+    color: var(--color-midnight);
+    font-family: var(--font-ui);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+  /* ── REVEAL ANIMATION ────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s var(--ease-reveal), transform 0.9s var(--ease-reveal);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.12s; }
+  .reveal-d2 { transition-delay: 0.24s; }
+  .reveal-d3 { transition-delay: 0.36s; }
+  .reveal-d4 { transition-delay: 0.48s; }
+
+  /* ── NAVIGATION ──────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 80px;
+    background: rgba(245, 239, 230, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(199, 190, 178, 0.4);
+    transition: background 0.3s ease;
+  }
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-smoke);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--color-midnight); }
+  .nav-wordmark {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .wordmark-text {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    color: var(--color-midnight);
+    white-space: nowrap;
+  }
+  .wordmark-amp {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 20px;
+    color: var(--color-champagne);
+    margin: 0 4px;
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .nav-subscribe {
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-midnight);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-champagne);
+    padding-bottom: 1px;
+    transition: color 0.3s ease;
+  }
+
+  /* ── HERO ────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--color-midnight);
+  }
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  .hero-media.loaded { opacity: 1; }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      160deg,
+      #1a2535 0%,
+      #0e1a2b 40%,
+      #1c1018 100%
+    );
+  }
+  /* Simulated atelier photography — grainy dark with warm tones */
+  .hero-atmosphere {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 35% 50%, rgba(61,30,46,0.5) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 70% 30%, rgba(184,159,126,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 40% at 50% 100%, rgba(14,26,43,0.9) 0%, transparent 100%);
+  }
+  .hero-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px;
+  }
+  /* Silhouette shape — placeholder for actual image */
+  .hero-silhouette {
+    position: absolute;
+    right: 12%;
+    bottom: 0;
+    width: 38%;
+    height: 90%;
+    background: linear-gradient(
+      to bottom,
+      rgba(217, 182, 176, 0.12) 0%,
+      rgba(61, 30, 46, 0.25) 40%,
+      rgba(14, 26, 43, 0.6) 100%
+    );
+    clip-path: ellipse(50% 100% at 50% 100%);
+    opacity: 0.6;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 40%,
+      rgba(14, 26, 43, 0.6) 100%
+    );
+  }
+  .hero-content {
+    position: absolute;
+    bottom: 80px;
+    left: 80px;
+    right: 40%;
+    z-index: 2;
+  }
+  .eyebrow {
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-champagne);
+    margin-bottom: 24px;
+    display: block;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 7vw, 96px);
+    line-height: 1.0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ivory);
+    margin-bottom: 24px;
+  }
+  .hero-sub {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    color: rgba(245, 239, 230, 0.75);
+    margin-bottom: 48px;
+    line-height: 1.4;
+  }
+  .cta-link {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-ivory);
+    text-decoration: none;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--color-champagne);
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  .cta-link:hover { color: var(--color-champagne); }
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 48px;
+    background: rgba(245, 239, 230, 0.3);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+
+  /* ── IMAGE PLACEHOLDER UTILITY ──────────────────────── */
+  .img-slot {
+    position: relative;
+    background: var(--color-bone);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .img-slot::after {
+    content: attr(data-slot);
+    position: absolute;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-veil);
+    opacity: 0.5;
+  }
+  /* Simulated photo textures for placeholder sections */
+  .img-slot.style-bw {
+    background: linear-gradient(135deg, #2a2520 0%, #3d3530 40%, #1e1a18 100%);
+  }
+  .img-slot.style-bw::after { color: rgba(245,239,230,0.2); }
+  .img-slot.style-warm {
+    background: linear-gradient(135deg, #e8ddd2 0%, #d5c9bc 50%, #c9b9a8 100%);
+  }
+  .img-slot.style-plum {
+    background: linear-gradient(135deg, #2a1520 0%, #3d1e2e 60%, #1a0d16 100%);
+  }
+  .img-slot.style-plum::after { color: rgba(245,239,230,0.2); }
+
+  /* ── SECTION 2 — EDITORIAL SPREAD ──────────────────── */
+  .editorial-spread {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+  .spread-image {
+    height: 100%;
+    min-height: 600px;
+  }
+  .spread-content {
+    background: var(--color-ivory);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px;
+  }
+  .spread-content .eyebrow { color: var(--color-champagne); }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 4vw, 56px);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-midnight);
+    margin-bottom: 32px;
+    line-height: 1.1;
+  }
+  .pull-quote {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(22px, 2.5vw, 30px);
+    line-height: 1.4;
+    color: var(--color-midnight);
+    margin-bottom: 32px;
+    letter-spacing: 0.01em;
+  }
+  .body-text {
+    font-family: var(--font-ui);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--color-smoke);
+    margin-bottom: 48px;
+    max-width: 420px;
+  }
+  .ornament {
+    display: inline-block;
+    color: var(--color-champagne);
+    font-size: 14px;
+    margin-top: 24px;
+    letter-spacing: 0.3em;
+  }
+
+  /* ── SECTION 3 — FULL BLEED FILM ────────────────────── */
+  .full-bleed {
+    width: 100%;
+    height: 80vh;
+    position: relative;
+    overflow: hidden;
+  }
+  .full-bleed-caption {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: rgba(245, 239, 230, 0.4);
+    letter-spacing: 0.1em;
+    font-style: italic;
+  }
+
+  /* ── SECTION 4 — DUET GRID ──────────────────────────── */
+  .duet-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    position: relative;
+  }
+  .duet-quote {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .duet-quote span {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(28px, 3vw, 42px);
+    color: var(--color-ivory);
+    text-align: center;
+    max-width: 500px;
+    text-shadow: 0 2px 48px rgba(14, 26, 43, 0.6);
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.9s var(--ease-reveal), transform 0.9s var(--ease-reveal);
+  }
+  .duet-grid.in-view .duet-quote span { opacity: 1; transform: translateY(0); }
+
+  /* ── SECTION 5 — THE HOUSE ──────────────────────────── */
+  .house-section {
+    background: var(--color-midnight);
+    padding: 192px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .house-section .eyebrow { color: var(--color-champagne); }
+  .house-section .section-title {
+    color: var(--color-ivory);
+    max-width: 680px;
+    margin: 0 auto 32px;
+  }
+  .house-section .body-text {
+    color: rgba(245, 239, 230, 0.65);
+    max-width: 600px;
+    text-align: center;
+    margin: 0 auto 48px;
+  }
+  .house-section .cta-link { color: var(--color-ivory); }
+
+  /* ── SECTION 6 — COLLECTION GRID ────────────────────── */
+  .collection-section {
+    background: var(--color-bone);
+    padding: 96px 80px;
+  }
+  .collection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+  }
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-veil);
+  }
+  .product-card {
+    background: var(--color-ivory);
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .product-card-image {
+    aspect-ratio: 2/3;
+    overflow: hidden;
+  }
+  .product-card:hover .product-card-image .img-slot {
+    transform: scale(1.03);
+    transition: transform 0.6s var(--ease-reveal);
+  }
+  .product-card-image .img-slot {
+    height: 100%;
+    transition: transform 0.6s var(--ease-reveal);
+  }
+  .product-info {
+    padding: 20px 20px 24px;
+  }
+  .product-info .eyebrow {
+    font-size: 10px;
+    color: var(--color-mist);
+    margin-bottom: 8px;
+  }
+  .product-name {
+    font-family: var(--font-editorial);
+    font-size: 18px;
+    color: var(--color-midnight);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .product-price {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    color: var(--color-smoke);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SECTION 7 — SUBSCRIBE CTA ──────────────────────── */
+  .subscribe-cta {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--color-midnight);
+  }
+  .subscribe-bg {
+    position: absolute;
+    inset: 0;
+  }
+  .subscribe-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(14, 26, 43, 0.72);
+  }
+  .subscribe-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 80px;
+  }
+  .subscribe-content .eyebrow { color: var(--color-champagne); margin-bottom: 32px; }
+  .subscribe-content .section-title { color: var(--color-ivory); margin-bottom: 24px; }
+  .subscribe-content .body-text {
+    color: rgba(245, 239, 230, 0.6);
+    text-align: center;
+    max-width: 480px;
+    margin: 0 auto 56px;
+  }
+  .cta-button {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-ivory);
+    text-decoration: none;
+    border: 1px solid var(--color-ivory);
+    padding: 20px 48px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .cta-button:hover {
+    background: var(--color-ivory);
+    color: var(--color-midnight);
+  }
+
+  /* ── SECTION 8 — JOURNAL ────────────────────────────── */
+  .journal-section {
+    padding: 96px 80px;
+    background: var(--color-ivory);
+  }
+  .journal-grid {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: 1px;
+    background: var(--color-veil);
+    margin-top: 64px;
+  }
+  .journal-card {
+    background: var(--color-ivory);
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .journal-card-large .journal-image {
+    aspect-ratio: 3/2;
+    position: relative;
+    overflow: hidden;
+  }
+  .journal-card-large .journal-image .img-slot { height: 100%; }
+  .journal-card-small {
+    display: flex;
+    flex-direction: column;
+  }
+  .journal-card-small .journal-image {
+    aspect-ratio: 4/3;
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+  }
+  .journal-card-small .journal-image .img-slot { height: 100%; }
+  .journal-card-info {
+    padding: 24px;
+  }
+  .journal-card-info .eyebrow { margin-bottom: 12px; }
+  .journal-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-midnight);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .journal-date {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: var(--color-mist);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── FOOTER ─────────────────────────────────────────── */
+  footer {
+    background: var(--color-midnight);
+    padding: 96px 80px 0;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 2fr;
+    gap: 48px;
+    padding-bottom: 80px;
+    border-bottom: 1px solid rgba(199, 190, 178, 0.12);
+  }
+  .footer-brand .wordmark-text { color: var(--color-ivory); font-size: 16px; }
+  .footer-tagline {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--color-champagne);
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+  .footer-col-title {
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245, 239, 230, 0.4);
+    margin-bottom: 24px;
+  }
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-links a {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: rgba(245, 239, 230, 0.55);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    letter-spacing: 0.02em;
+  }
+  .footer-links a:hover { color: var(--color-ivory); }
+  .footer-email-label {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    color: rgba(245, 239, 230, 0.45);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .footer-input-row {
+    display: flex;
+    border-bottom: 1px solid rgba(245, 239, 230, 0.2);
+  }
+  .footer-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-ivory);
+    padding: 12px 0;
+  }
+  .footer-input::placeholder { color: rgba(245, 239, 230, 0.2); }
+  .footer-submit {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-champagne);
+    padding: 12px 0 12px 16px;
+    transition: opacity 0.3s ease;
+  }
+  .footer-submit:hover { opacity: 0.6; }
+  .footer-base {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+  }
+  .footer-base-text {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: rgba(245, 239, 230, 0.25);
+    letter-spacing: 0.1em;
+  }
+  .footer-legal {
+    display: flex;
+    gap: 32px;
+  }
+  .footer-legal a {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: rgba(245, 239, 230, 0.25);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    transition: color 0.3s ease;
+  }
+  .footer-legal a:hover { color: rgba(245, 239, 230, 0.5); }
+
+  /* ── SECTION LABEL DIVIDERS ─────────────────────────── */
+  .section-intro {
+    padding: 0 80px;
+    margin-bottom: 16px;
+  }
+  .hairline {
+    width: 40px;
+    height: 1px;
+    background: var(--color-champagne);
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <ul class="nav-links">
+    <li><a href="#">Collections</a></li>
+    <li><a href="#">Journal</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-wordmark">
+    <span class="wordmark-text">Mars</span>
+    <span class="wordmark-amp">&</span>
+    <span class="wordmark-text">Moon</span>
+  </div>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#subscribe" class="nav-subscribe">Subscribe</a></li>
+      <li><a href="#">Search</a></li>
+      <li><a href="#">Bag · 0</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-atmosphere"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-silhouette"></div>
+  <div class="hero-overlay"></div>
+
+  <!-- Swap this for your actual image/video:
+  <video autoplay muted loop playsinline poster="./assets/images/HERO_VIDEO-poster.jpg" class="hero-media" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+    <source src="./assets/video/HERO_VIDEO.mp4" type="video/mp4">
+  </video>
+  -->
+
+  <div class="hero-content">
+    <span class="eyebrow reveal">A New Arrival &nbsp;·&nbsp; The Twelfth</span>
+    <h1 class="hero-title reveal reveal-d1">The Velvet<br>Hour.</h1>
+    <p class="hero-sub reveal reveal-d2">Worn close. Held longer.</p>
+    <a href="#subscribe" class="cta-link reveal reveal-d3">Begin the Subscription &nbsp;→</a>
+  </div>
+  <div class="scroll-indicator"></div>
+</section>
+
+<!-- ── SECTION 2 — EDITORIAL SPREAD ── -->
+<section class="editorial-spread">
+  <div class="spread-image img-slot style-bw" data-slot="EDITORIAL_SPREAD_IMAGE"
+    style="background: linear-gradient(160deg, #2a2520 0%, #1a1210 60%, #0e0a08 100%); min-height: 700px;">
+    <!-- Replace with: <img src="./assets/images/EDITORIAL_SPREAD_IMAGE.jpg" alt="Atelier collection detail" /> -->
+  </div>
+  <div class="spread-content">
+    <span class="eyebrow reveal">The Collection</span>
+    <h2 class="section-title reveal reveal-d1">Foundations.</h2>
+    <p class="pull-quote reveal reveal-d2">A private atelier of slow-fashion lingerie, delivered in limited drops.</p>
+    <p class="body-text reveal reveal-d3">Each piece arrives once. Considered, French-seamed, finite. The Foundations collection is the first chapter — worn close, held longer than the season demands.</p>
+    <a href="#" class="cta-link reveal reveal-d4">Shop the Collection &nbsp;→</a>
+    <span class="ornament reveal">✦</span>
+  </div>
+</section>
+
+<!-- ── SECTION 3 — FULL BLEED FILM ── -->
+<div class="full-bleed img-slot style-bw" data-slot="EDITORIAL_FILM_IMAGE"
+  style="background: linear-gradient(180deg, #1c1410 0%, #100c0a 50%, #0a0806 100%);">
+  <!-- Replace with: <img src="./assets/images/EDITORIAL_FILM_IMAGE.jpg" alt="Atelier editorial" /> -->
+  <span class="full-bleed-caption">Paris Atelier, MMXXVI</span>
+</div>
+
+<!-- ── SECTION 4 — DUET GRID ── -->
+<div class="duet-grid" id="duet">
+  <div class="img-slot style-bw" data-slot="DUET_LEFT"
+    style="background: linear-gradient(135deg, #1a1412 0%, #0e0c0a 100%);">
+    <!-- Replace with: <img src="./assets/images/DUET_LEFT.jpg" alt="Lace detail" /> -->
+  </div>
+  <div class="img-slot style-warm" data-slot="DUET_RIGHT"
+    style="background: linear-gradient(135deg, #d5c5b5 0%, #c2afa0 50%, #b09080 100%);">
+    <!-- Replace with: <img src="./assets/images/DUET_RIGHT.jpg" alt="Editorial portrait" /> -->
+  </div>
+  <div class="duet-quote">
+    <span>"Worn close.<br>Held longer."</span>
+  </div>
+</div>
+
+<!-- ── SECTION 5 — THE HOUSE ── -->
+<section class="house-section">
+  <span class="eyebrow reveal">A House, Not a Retailer</span>
+  <h2 class="section-title reveal reveal-d1">Romantic,<br>With an Edge.</h2>
+  <p class="body-text reveal reveal-d2">Mars & Moon sits at the intersection of celestial reverence and subversive intimacy. Every collection is finite. Every delivery is an arrival, not a shipment. Every surface should feel composed, intentional, quietly seductive.</p>
+  <a href="#" class="cta-link reveal reveal-d3">The House Story &nbsp;→</a>
+</section>
+
+<!-- ── SECTION 6 — COLLECTION GRID ── -->
+<section class="collection-section">
+  <div class="collection-header">
+    <div>
+      <div class="hairline"></div>
+      <h2 class="section-title reveal" style="font-size: 36px;">The Collection.</h2>
+    </div>
+    <a href="#" class="cta-link">View All &nbsp;→</a>
+  </div>
+  <div class="collection-grid">
+
+    <div class="product-card reveal">
+      <div class="product-card-image">
+        <div class="img-slot style-bw" data-slot="PRODUCT_CARD_01"
+          style="background: linear-gradient(160deg, #282018 0%, #1a1410 100%); height: 100%;">
+        </div>
+      </div>
+      <div class="product-info">
+        <span class="eyebrow">Velvet Hour</span>
+        <p class="product-name">Bias-cut Bodice</p>
+        <p class="product-price">€ 320</p>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-d1">
+      <div class="product-card-image">
+        <div class="img-slot style-warm" data-slot="PRODUCT_CARD_02"
+          style="background: linear-gradient(160deg, #d0c0b0 0%, #b8a898 100%); height: 100%;">
+        </div>
+      </div>
+      <div class="product-info">
+        <span class="eyebrow">Foundations</span>
+        <p class="product-name">Charmeuse Robe</p>
+        <p class="product-price">€ 480</p>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-d2">
+      <div class="product-card-image">
+        <div class="img-slot style-plum" data-slot="PRODUCT_CARD_03"
+          style="height: 100%;">
+        </div>
+      </div>
+      <div class="product-info">
+        <span class="eyebrow">Velvet Hour</span>
+        <p class="product-name">Lace Teddy</p>
+        <p class="product-price">€ 390</p>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-card-image">
+        <div class="img-slot style-warm" data-slot="PRODUCT_CARD_04"
+          style="background: linear-gradient(160deg, #c8b8a8 0%, #a89888 100%); height: 100%;">
+        </div>
+      </div>
+      <div class="product-info">
+        <span class="eyebrow">Foundations</span>
+        <p class="product-name">Silk Bralette</p>
+        <p class="product-price">€ 220</p>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-d1">
+      <div class="product-card-image">
+        <div class="img-slot style-bw" data-slot="PRODUCT_CARD_05"
+          style="background: linear-gradient(160deg, #201814 0%, #140e0a 100%); height: 100%;">
+        </div>
+      </div>
+      <div class="product-info">
+        <span class="eyebrow">Velvet Hour</span>
+        <p class="product-name">French Brief</p>
+        <p class="product-price">€ 180</p>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-d2">
+      <div class="product-card-image">
+        <div class="img-slot style-plum" data-slot="PRODUCT_CARD_06"
+          style="height: 100%;">
+        </div>
+      </div>
+      <div class="product-info">
+        <span class="eyebrow">Foundations</span>
+        <p class="product-name">Satin Slip</p>
+        <p class="product-price">€ 340</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SECTION 7 — SUBSCRIBE CTA ── -->
+<section class="subscribe-cta" id="subscribe">
+  <div class="subscribe-bg img-slot style-plum" data-slot="SUBSCRIBE_BG_IMAGE"
+    style="background: linear-gradient(160deg, #1a0d16 0%, #3d1e2e 40%, #0e1a2b 100%);">
+    <!-- Replace with: <img src="./assets/images/SUBSCRIBE_BG_IMAGE.jpg" alt="Subscription background" /> -->
+  </div>
+  <div class="subscribe-overlay"></div>
+  <div class="subscribe-content">
+    <span class="eyebrow reveal">Your December Arrives Thursday.</span>
+    <h2 class="section-title reveal reveal-d1">Begin the<br>Subscription.</h2>
+    <p class="body-text reveal reveal-d2">Limited drops. Delivered to your door. A ceremony, not a shipment.</p>
+    <a href="#" class="cta-button reveal reveal-d3">Open the Envelope &nbsp;→</a>
+  </div>
+</section>
+
+<!-- ── SECTION 8 — JOURNAL ── -->
+<section class="journal-section">
+  <div class="section-intro">
+    <div class="hairline"></div>
+    <span class="eyebrow">From the Atelier</span>
+  </div>
+  <h2 class="section-title reveal" style="padding: 0 80px; font-size: 36px;">The Journal.</h2>
+  <div class="journal-grid">
+    <div class="journal-card journal-card-large reveal">
+      <div class="journal-image">
+        <div class="img-slot style-bw" data-slot="JOURNAL_CARD_01"
+          style="background: linear-gradient(160deg, #201a14 0%, #100e0a 100%); height: 380px;">
+        </div>
+      </div>
+      <div class="journal-card-info">
+        <span class="eyebrow">The Atelier</span>
+        <h3 class="journal-title">Worn Close.<br>Notes on the Velvet Hour.</h3>
+        <p class="journal-date">May MMXXVI</p>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 1px;">
+      <div class="journal-card journal-card-small reveal reveal-d1">
+        <div class="journal-image">
+          <div class="img-slot style-warm" data-slot="JOURNAL_CARD_02"
+            style="background: linear-gradient(160deg, #cfc0b0 0%, #b5a090 100%); height: 220px;">
+          </div>
+        </div>
+        <div class="journal-card-info">
+          <span class="eyebrow">Photography</span>
+          <h3 class="journal-title">The Shoot.<br>Paris, February.</h3>
+          <p class="journal-date">February MMXXVI</p>
+        </div>
+      </div>
+      <div class="journal-card journal-card-small reveal reveal-d2">
+        <div class="journal-image">
+          <div class="img-slot style-plum" data-slot="JOURNAL_CARD_03"
+            style="height: 160px;">
+          </div>
+        </div>
+        <div class="journal-card-info">
+          <span class="eyebrow">The House</span>
+          <h3 class="journal-title">Why Finite.</h3>
+          <p class="journal-date">January MMXXVI</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:2px;">
+        <span class="wordmark-text" style="color:var(--color-ivory);font-size:18px;">Mars</span>
+        <span class="wordmark-amp">&</span>
+        <span class="wordmark-text" style="color:var(--color-ivory);font-size:18px;">Moon</span>
+      </div>
+      <p class="footer-tagline">From Mars<br>and Moon,<br>with love.</p>
+    </div>
+    <div>
+      <p class="footer-col-title">Collections</p>
+      <ul class="footer-links">
+        <li><a href="#">Velvet Hour</a></li>
+        <li><a href="#">Foundations</a></li>
+        <li><a href="#">Archive</a></li>
+        <li><a href="#">Gift</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">The House</p>
+      <ul class="footer-links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Journal</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">The Subscription</p>
+      <p class="footer-email-label">Your address. Your arrival. Once a month, until you say otherwise.</p>
+      <div class="footer-input-row">
+        <input class="footer-input" type="email" placeholder="Your Address">
+        <button class="footer-submit">Begin →</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <p class="footer-base-text">© MMXXVI Mars & Moon. &nbsp;Paris.</p>
+    <div class="footer-legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── SCROLL REVEAL ──────────────────────────────────────
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // Trigger hero reveals immediately
+  document.querySelectorAll('.hero .reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), 300 + i * 150);
+  });
+
+  // ── DUET QUOTE REVEAL ─────────────────────────────────
+  const duetObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, { threshold: 0.4 });
+
+  const duet = document.getElementById('duet');
+  if (duet) duetObserver.observe(duet);
+
+  // ── NAV SCROLL STATE ──────────────────────────────────
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      nav.style.background = 'rgba(245, 239, 230, 0.92)';
+    } else {
+      nav.style.background = 'rgba(245, 239, 230, 0.85)';
+    }
+  });
+
+  // ── REDUCED MOTION ────────────────────────────────────
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  }
+</script>
+</body>
+</html>

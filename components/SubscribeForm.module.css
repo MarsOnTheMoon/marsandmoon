@@ -1,0 +1,124 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background: var(--color-ivory);
+  padding: var(--space-10) var(--margin-desktop);
+  min-height: 100vh;
+}
+.title {
+  color: var(--color-midnight);
+  margin: 24px 0 24px;
+}
+.intro {
+  margin-bottom: 48px;
+  max-width: 420px;
+}
+
+.form {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.legend {
+  color: var(--color-smoke);
+  margin-bottom: 16px;
+}
+.plans {
+  border: none;
+  display: flex;
+  flex-direction: column;
+}
+.plan {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 4px;
+  border-top: 1px solid var(--color-bone);
+  cursor: pointer;
+  min-height: var(--hit-target);
+}
+.plan:last-child {
+  border-bottom: 1px solid var(--color-bone);
+}
+.radio {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--color-midnight);
+}
+.planLabel {
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-midnight);
+}
+.planNote {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--color-smoke);
+}
+.planActive {
+  color: var(--color-midnight);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.label {
+  color: var(--color-smoke);
+}
+.input {
+  height: var(--hit-target);
+  border: 1px solid var(--color-bone);
+  border-radius: 0;
+  background: var(--color-moonlight);
+  padding: 0 14px;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  color: var(--color-midnight);
+  transition: border-color var(--duration-fast) var(--ease-fade);
+}
+.input:focus {
+  outline: none;
+  border-color: var(--color-midnight);
+}
+select.input {
+  appearance: none;
+}
+
+.submit {
+  align-self: flex-start;
+  color: var(--color-midnight);
+  border-color: var(--color-midnight);
+  margin-top: 8px;
+}
+.submit:hover {
+  background: var(--color-midnight);
+  color: var(--color-ivory);
+}
+
+.confirm {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--color-midnight);
+  max-width: 420px;
+}
+
+@media (max-width: 900px) {
+  .panel {
+    min-height: auto;
+    padding: var(--space-9) var(--margin-mobile);
+  }
+}

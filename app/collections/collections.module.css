@@ -1,0 +1,30 @@
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-items: center;
+  padding: 32px var(--margin-desktop);
+  background: var(--color-bone);
+  border-bottom: 1px solid var(--color-veil);
+}
+.filter {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-smoke);
+  transition: color var(--duration-fast) var(--ease-fade);
+}
+.filter:hover {
+  color: var(--color-midnight);
+}
+.active {
+  color: var(--color-midnight);
+}
+
+@media (max-width: 560px) {
+  .filterBar {
+    padding: 24px var(--margin-mobile);
+    gap: 20px;
+  }
+}

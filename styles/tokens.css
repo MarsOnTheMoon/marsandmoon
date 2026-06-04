@@ -1,0 +1,144 @@
+/* ============================================================
+   MARS & MOON — DESIGN TOKENS
+   Single source of truth. Shared with the future mobile app.
+   ============================================================ */
+
+:root {
+  /* ── Color · Surfaces (60/20/15/5 discipline) ── */
+  --color-moonlight: #fbf7ef; /* lightest surface */
+  --color-ivory: #f5efe6; /* default surface · 60% of compositions */
+  --color-bone: #eae2d6; /* section divisions, card surfaces */
+  --color-veil: #c7beb2; /* hairline rules on light */
+  --color-mist: #a8a29a; /* secondary midtone */
+
+  /* ── Color · Mid-tones ── */
+  --color-rose: #d9b6b0; /* skin, intimacy — never buttons */
+  --color-smoke: #6b6660; /* body copy on light surfaces */
+
+  /* ── Color · Accents (5% combined maximum) ── */
+  --color-champagne: #b89f7e; /* single metallic · tagline · ornaments */
+  --color-plum: #3d1e2e; /* velvet, ceremonial surfaces */
+  --color-midnight: #0e1a2b; /* primary dark · all type on light */
+
+  /* ── Color · Semantic aliases ── */
+  --color-surface: var(--color-ivory);
+  --color-text-primary: var(--color-midnight);
+  --color-text-body: var(--color-smoke);
+  --color-text-accent: var(--color-champagne);
+  --color-border: var(--color-veil);
+
+  /* ── Color · Tonal RGBs (for opacity composition) ── */
+  --rgb-midnight: 14, 26, 43;
+  --rgb-ivory: 245, 239, 230;
+
+  /* ── Typography · Families ── */
+  --font-display: var(--font-tenor), "Tenor Sans", sans-serif;
+  --font-editorial: var(--font-cormorant), "Cormorant Garamond", serif;
+  --font-ui: var(--font-inter), "Inter", sans-serif;
+
+  /* ── Typography · Tracking ── */
+  --track-display: 0.04em; /* +40 */
+  --track-heading: 0.06em; /* +60 */
+  --track-quote: 0.02em; /* +20 */
+  --track-body: 0.01em; /* +10 */
+  --track-eyebrow: 0.2em; /* +200 */
+  --track-footer: 0.1em; /* +100 */
+
+  /* ── Spacing (8px base unit) ── */
+  --space-1: 4px; /* hairline padding */
+  --space-2: 8px; /* metadata gap */
+  --space-4: 16px; /* card padding */
+  --space-6: 32px; /* component gap */
+  --space-8: 64px; /* section gap (mobile) */
+  --space-9: 96px; /* section gap (default) */
+  --space-10: 128px; /* hero-to-content */
+  --space-12: 192px; /* hero breathing room */
+
+  /* ── Layout ── */
+  --margin-desktop: 80px;
+  --margin-tablet: 48px;
+  --margin-mobile: 20px;
+  --gutter-desktop: 24px;
+  --nav-height: 72px;
+  --hit-target: 44px;
+
+  /* ── Motion ── */
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1); /* elements entering */
+  --ease-fade: cubic-bezier(0.4, 0, 0.2, 1); /* opacity transitions */
+  --duration-slow: 900ms;
+  --duration-med: 600ms;
+  --duration-fast: 300ms;
+}
+
+/* ============================================================
+   TOKEN EXPORT — consumed by the Mars & Moon mobile app.
+   Parse this block to share tokens without a separate design tool.
+
+{
+  "color": {
+    "moonlight": "#FBF7EF",
+    "ivory": "#F5EFE6",
+    "bone": "#EAE2D6",
+    "veil": "#C7BEB2",
+    "mist": "#A8A29A",
+    "rose": "#D9B6B0",
+    "smoke": "#6B6660",
+    "champagne": "#B89F7E",
+    "plum": "#3D1E2E",
+    "midnight": "#0E1A2B",
+    "surface": "#F5EFE6",
+    "textPrimary": "#0E1A2B",
+    "textBody": "#6B6660",
+    "textAccent": "#B89F7E",
+    "border": "#C7BEB2"
+  },
+  "font": {
+    "display": "Tenor Sans",
+    "editorial": "Cormorant Garamond",
+    "ui": "Inter",
+    "scale": {
+      "display": 96,
+      "h1": 64,
+      "h1App": 30,
+      "h2": 40,
+      "h3": 24,
+      "pullQuote": 30,
+      "body": 16,
+      "bodyApp": 15,
+      "caption": 13,
+      "eyebrow": 11
+    },
+    "tracking": {
+      "display": 0.04,
+      "heading": 0.06,
+      "quote": 0.02,
+      "body": 0.01,
+      "eyebrow": 0.2,
+      "footer": 0.1
+    }
+  },
+  "space": {
+    "1": 4,
+    "2": 8,
+    "4": 16,
+    "6": 32,
+    "8": 64,
+    "9": 96,
+    "10": 128,
+    "12": 192
+  },
+  "ease": {
+    "reveal": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "fade": "cubic-bezier(0.4, 0, 0.2, 1)"
+  },
+  "duration": {
+    "slow": 900,
+    "med": 600,
+    "fast": 300
+  },
+  "layout": {
+    "hitTarget": 44,
+    "appOuterMargin": 20
+  }
+}
+   ============================================================ */

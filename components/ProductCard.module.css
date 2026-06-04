@@ -1,0 +1,41 @@
+.card {
+  display: block;
+  background: var(--color-ivory);
+  overflow: hidden;
+}
+
+.image {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+}
+.image :global(.mm-slot),
+.image :global(.mm-media) {
+  transition: transform var(--duration-med) var(--ease-reveal);
+}
+.card:hover .image :global(.mm-slot),
+.card:hover .image :global(.mm-media) {
+  transform: scale(1.03);
+}
+
+.info {
+  padding: 20px 20px 24px;
+}
+.collection {
+  font-size: 10px;
+  color: var(--color-smoke);
+  margin-bottom: 8px;
+}
+.name {
+  font-family: var(--font-editorial);
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--color-midnight);
+  margin-bottom: 6px;
+}
+.price {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  color: var(--color-smoke);
+}

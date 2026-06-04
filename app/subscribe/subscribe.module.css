@@ -1,0 +1,21 @@
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+.image {
+  position: relative;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+  .image {
+    position: relative;
+    height: 60vh;
+  }
+}

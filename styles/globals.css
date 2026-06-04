@@ -1,0 +1,266 @@
+/* ============================================================
+   MARS & MOON — GLOBAL STYLES
+   Resets + base element styles + shared brand primitives.
+   All values route through tokens.css.
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+/* ── Focus styles (accessibility) ── */
+:focus-visible {
+  outline: 2px solid var(--color-champagne);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   SHARED BRAND PRIMITIVES
+   Reused across components — kept global so the type system
+   stays consistent everywhere.
+   ============================================================ */
+
+/* Eyebrow / overline — Inter Medium, ALL CAPS, +200 tracking */
+.mm-eyebrow {
+  display: block;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-champagne);
+}
+
+/* Display / Hero — Tenor Sans ALL CAPS */
+.mm-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(52px, 7vw, 96px);
+  line-height: 1;
+  letter-spacing: var(--track-display);
+  text-transform: uppercase;
+}
+
+/* H1 */
+.mm-h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(44px, 5.5vw, 64px);
+  line-height: 1.1;
+  letter-spacing: var(--track-heading);
+  text-transform: uppercase;
+}
+
+/* H2 — section title */
+.mm-h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(32px, 4vw, 44px);
+  line-height: 1.15;
+  letter-spacing: var(--track-heading);
+  text-transform: uppercase;
+}
+
+/* H3 — Cormorant title case */
+.mm-h3 {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  font-size: clamp(22px, 2.4vw, 26px);
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+/* Pull quote — Cormorant Italic 300 */
+.mm-quote {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(24px, 2.6vw, 30px);
+  line-height: 1.4;
+  letter-spacing: var(--track-quote);
+}
+
+/* Body — Inter */
+.mm-body {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.7;
+  letter-spacing: var(--track-body);
+  color: var(--color-text-body);
+}
+
+/* Caption / metadata */
+.mm-caption {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: var(--track-body);
+  color: var(--color-smoke);
+}
+
+/* CTA link — text with champagne hairline underline */
+.mm-cta {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--color-champagne);
+  transition: color var(--duration-fast) var(--ease-fade),
+    opacity var(--duration-fast) var(--ease-fade);
+  min-height: var(--hit-target);
+}
+.mm-cta:hover {
+  color: var(--color-champagne);
+}
+
+/* CTA button — outlined, fills on hover */
+.mm-button {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-ivory);
+  border: 1px solid var(--color-ivory);
+  padding: 20px 40px;
+  transition: background var(--duration-fast) linear,
+    color var(--duration-fast) linear;
+}
+.mm-button:hover {
+  background: var(--color-ivory);
+  color: var(--color-midnight);
+}
+
+/* 4-point star ornament */
+.mm-ornament {
+  display: inline-block;
+  color: var(--color-champagne);
+  font-size: 14px;
+  letter-spacing: 0.3em;
+}
+
+/* Champagne hairline rule */
+.mm-hairline {
+  width: 40px;
+  height: 1px;
+  background: var(--color-champagne);
+}
+
+/* ============================================================
+   MEDIA PLACEHOLDER SYSTEM
+   Until a real asset is dropped in, slots render as a bone
+   coloured panel labelled with the slot name.
+   ============================================================ */
+
+.mm-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mm-slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--color-bone);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mm-slot::after {
+  content: attr(data-slot);
+  position: absolute;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-veil);
+  opacity: 0.6;
+}
+
+/* tonal placeholder variants so the comps read close to the shoot */
+.mm-slot--bw {
+  background: linear-gradient(135deg, #2a2520 0%, #3d3530 40%, #1e1a18 100%);
+}
+.mm-slot--bw::after {
+  color: rgba(var(--rgb-ivory), 0.25);
+}
+.mm-slot--warm {
+  background: linear-gradient(135deg, #e8ddd2 0%, #d5c9bc 50%, #c9b9a8 100%);
+}
+.mm-slot--plum {
+  background: linear-gradient(135deg, #2a1520 0%, #3d1e2e 60%, #1a0d16 100%);
+}
+.mm-slot--plum::after {
+  color: rgba(var(--rgb-ivory), 0.25);
+}
+.mm-slot--midnight {
+  background: linear-gradient(160deg, #1a2535 0%, #0e1a2b 45%, #1c1018 100%);
+}
+.mm-slot--midnight::after {
+  color: rgba(var(--rgb-ivory), 0.25);
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
