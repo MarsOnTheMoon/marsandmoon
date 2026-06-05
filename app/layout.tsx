@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Tenor_Sans, Cormorant_Garamond, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "../styles/tokens.css";
 import "../styles/globals.css";
 import Nav from "../components/Nav";
@@ -47,6 +48,7 @@ export default function RootLayout({
         <Nav />
         <main>{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
