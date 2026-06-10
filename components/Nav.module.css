@@ -9,16 +9,17 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--margin-desktop);
-  background: rgba(var(--rgb-ivory), 0.8);
+  background: rgba(var(--rgb-ivory), 0.72);
   border-bottom: 1px solid transparent;
   transition: background var(--duration-fast) var(--ease-fade),
-    border-color var(--duration-fast) var(--ease-fade);
+    border-color var(--duration-fast) var(--ease-fade),
+    backdrop-filter var(--duration-fast) var(--ease-fade);
 }
 
 .scrolled {
-  background: rgba(var(--rgb-ivory), 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(var(--rgb-ivory), 0.9);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid var(--color-veil);
 }
 
