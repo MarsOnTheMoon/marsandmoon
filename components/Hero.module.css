@@ -1,8 +1,7 @@
 .hero {
   position: relative;
-  width: 100vw;
-  height: 100vh;
-  margin-top: calc(-1 * var(--nav-height)); /* pull back under the fixed nav */
+  width: 100%;
+  height: calc(100vh - var(--nav-height)); /* fills the viewport below the nav */
   overflow: hidden;
   background: var(--color-midnight);
 }
