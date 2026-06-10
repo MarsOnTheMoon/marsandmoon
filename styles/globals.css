@@ -32,6 +32,12 @@ img {
   max-width: 100%;
 }
 
+/* Interior pages begin below the fixed nav. The home hero opts back out
+   with a compensating negative margin so it stays full-bleed under the nav. */
+main {
+  padding-top: var(--nav-height);
+}
+
 a {
   color: inherit;
   text-decoration: none;

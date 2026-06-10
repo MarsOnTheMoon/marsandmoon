@@ -170,10 +170,11 @@
     display: none;
   }
   .wordmarkLink {
-    left: var(--margin-mobile);
-    transform: none;
+    left: 50%;
+    transform: translateX(-50%);
   }
   .burger {
     display: flex;
+    margin-left: auto;
   }
 }

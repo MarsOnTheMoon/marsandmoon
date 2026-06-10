@@ -15,7 +15,7 @@ export default function CollectionsPage() {
   return (
     <>
       <PageHero
-        slot="COLLECTION_HERO"
+        slot="COLLECTION_INDEX_HERO"
         tone="midnight"
         alt="Wide, atmospheric image of the Mars & Moon atelier"
         eyebrow="The Atelier · MMXXVI"
